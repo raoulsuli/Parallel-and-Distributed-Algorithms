@@ -1,0 +1,33 @@
+#Sulimovici Raoul-Renatto 331CB
+
+##Checker-ul nu detecteaza citirea in paralel, insa am implementat-o si am deschis fisierul de 4 ori.
+
+Implementarea contine citirea si trimiterea textului catre workeri in paralel, in procesul Master.
+Functia de tip pthread numita "read_and_send_to_workers" face acest lucru.
+
+In aceasta functie voi citi initial numarul total de paragrafe din fisier si voi salva intr-un vector ordinea acestor paragrafe,
+vector ce va fi trimis tuturor workerilor pentru a puta seta tag-urile, astfel la sfarsit voi stii care a fost ordinea.
+(Fiecare paragraf din worker va avea un tag diferit, de la 0 la nr de paragrafe din fisier, astfel le voi scrie in ordine).
+
+Dupa, voi citi numarul de paragrafe de fiecare tip si lungimea acestora si voi trimite aceste informatii catre worker-ul specific
+thread-ului actual. Apoi voi citi si trimite, pe rand, fiecare paragraf de fiecare tip.
+
+La sfarsitul functiei voi pune o bariera, astfel in acest moment toti workerii vor fi terminat procesarea textului si voi scrie in
+fisierul out paragrafele, acestea fiind primite din workeri. (Cum am spus, ordinea va fi pastrata de tag-urile crescatoare)
+
+Functia main ->
+    Rank-ul master va porni thread-urile si va citi si trimite datele.
+    Orice alt rank va fi reprezentat de un worker. Fiecare worker va primi numarul de paragrafe de acel tip, lungimile acestor paragrafe
+    si paragrafele efective. Acestea vor prelucra textul asa cum este cerut in enunt, dupa care vor trimite textul prelucrat inapoi la Master.
+
+Prelucrarea textului ->
+    Pentru a prelucra textul am parcurs caracter cu caracter, tinand cont de restrictiile impuse.
+    Horror ->
+        Daca este consoana (verific cu un vector de consoane initializat la inceput), o voi concatena de doua ori.
+    Comedy ->
+        Retin un index al caracterelor. Daca este par o fac litera mare, daca nu o las cum este.
+    Fantasy ->
+        Retin un index al caracterelor. Daca gasesc un newline sau un whitespace, fac index-ul 1. Daca index-ul este 1, fac
+            urmatorul caracter litera mare.
+    Science-fiction ->
+        Retin un index al cuvintelor. Il incrementez la fiecare newline sau whitespace. Daca index-ul este 7, inversez cuvantul.

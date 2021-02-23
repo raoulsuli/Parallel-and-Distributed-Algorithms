@@ -1,0 +1,19 @@
+#Sulimovici Raoul Renatto 331CB
+
+-> Am initializat P thread-uri, P citit de la tastatura, si o bariera pentru cele P thread-uri.
+
+->Am folosit o structura (arg_struct) unde salvez datele din fisierele de input pentru fiecare dintre imaginile Julia si Mandelbrot si salvez si un id, fiind thread_id-ul. Acesta va fi un vector de marime P. Il voi popula si da ca argument functiei de thread (function).
+
+->Ma folosesc de pthread_create pentru a crea thread-ul si a-i da functia si argumentele si de pthread_join pentru a finaliza operatiile
+
+->Functia cu numele function va apela toate cele 4 proceduri necesare pentru tema, in ordinea specificata. Va da ca argument id-ul thread-ului functiilor de prelucrare, unde va calcula intervalul necesar calculelor.
+
+->Intre functiile de prelucrare si cele de scriere al output-ului voi folosi o bariera, astfel incat atunci cand se va scrie matricea va fi deja completa.
+
+->Scrierea se va face o singura data (Doar pe primul thread) pentru a nu incetini rularea.
+
+->In interiorul functiilor voi paraleliza height-ul dupa modelul de la laboratoare, astfel ca matricea se va completa in paralel pe toata latimea insa pe inaltimi diferite.
+
+->Dupa ce completez datele in matrice voi folosi o bariera pentru a completa toate datele inainte de a transforma coordonatele.
+
+->Transformarea coordonatelor va fi pe acelasi model, doar ca limita superioara va fi height / 2, deoarece se vor schimba coordonatele intre ele simetric (prima jumatate cu a doua). (primul cu ultimul, al doilea cu antepenultimul samd)
